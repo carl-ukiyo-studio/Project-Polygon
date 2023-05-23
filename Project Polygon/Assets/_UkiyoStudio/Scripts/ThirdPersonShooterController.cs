@@ -13,6 +13,7 @@ namespace _UkiyoStudio.Scripts
         [SerializeField] private Transform spawnBulletPosition;
         [SerializeField] private Transform vfxHitGreen;
         [SerializeField] private Transform vfxHitRed;
+        [SerializeField] private Transform Crosshair;
         [SerializeField] private float lookSensitivity;
         [SerializeField] private float aimSensitivity;
         [SerializeField] private bool useHitScan;
@@ -22,7 +23,7 @@ namespace _UkiyoStudio.Scripts
         private Animator _animator;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             _animator = GetComponent<Animator>();
             _thirdPersonController = GetComponent<ThirdPersonController>();
@@ -76,15 +77,16 @@ namespace _UkiyoStudio.Scripts
         /// <param name="mouseWorldPosition"></param>
         private void HandleShooting(Transform hitTransform, Vector3 mouseWorldPosition)
         {
-            if (!_starterAssetsInputs.shoot) return;
-            
-            if (useHitScan)
+            if (_starterAssetsInputs.shoot && _starterAssetsInputs.aim)
             {
-                ShootHitScan(hitTransform, mouseWorldPosition);
-            }
-            else
-            {
-                ShootProjectile(mouseWorldPosition);
+                if (useHitScan)
+                {
+                    ShootHitScan(hitTransform, mouseWorldPosition);
+                }
+                else
+                {
+                    ShootProjectile(mouseWorldPosition);
+                }
             }
 
             _starterAssetsInputs.shoot = false;
@@ -125,6 +127,8 @@ namespace _UkiyoStudio.Scripts
         {
             if (_starterAssetsInputs.aim)
             {
+                Crosshair.gameObject.SetActive(true);
+                debugTransform.gameObject.SetActive(true);
                 aimVirtualCamera.gameObject.SetActive(true);
                 _thirdPersonController.SetSensitivity(aimSensitivity);
                 _thirdPersonController.SetRotateOnMove(false);
@@ -138,6 +142,8 @@ namespace _UkiyoStudio.Scripts
             }
             else
             {
+                Crosshair.gameObject.SetActive(false);
+                debugTransform.gameObject.SetActive(false);
                 aimVirtualCamera.gameObject.SetActive(false);
                 _thirdPersonController.SetSensitivity(lookSensitivity);
                 _thirdPersonController.SetRotateOnMove(true);
