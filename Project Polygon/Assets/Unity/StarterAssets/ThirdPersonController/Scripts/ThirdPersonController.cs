@@ -388,5 +388,15 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
+
+        public void SetSensitivity(float aimSensitivity)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetRotateOnMove(bool p0)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
