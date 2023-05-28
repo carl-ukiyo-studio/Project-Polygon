@@ -1,6 +1,7 @@
 using Cinemachine;
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace _UkiyoStudio.Scripts
 {
@@ -17,10 +18,13 @@ namespace _UkiyoStudio.Scripts
         [SerializeField] private float lookSensitivity;
         [SerializeField] private float aimSensitivity;
         [SerializeField] private bool useHitScan;
+        [SerializeField] private Rig aimRig;
 
         private StarterAssetsInputs _starterAssetsInputs;
         private ThirdPersonController _thirdPersonController;
         private Animator _animator;
+
+        private float _aimRigWeight;
 
         // Start is called before the first frame update
         void Awake()
@@ -133,6 +137,7 @@ namespace _UkiyoStudio.Scripts
                 _thirdPersonController.SetSensitivity(aimSensitivity);
                 _thirdPersonController.SetRotateOnMove(false);
                 _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 1f, Time.deltaTime * 10f));
+                aimRig.weight = Mathf.Lerp(aimRig.weight, 1f, Time.deltaTime * 20f);
 
                 Vector3 worldAimTarget = mouseWorldPosition;
                 worldAimTarget.y = transform.position.y;
@@ -148,6 +153,7 @@ namespace _UkiyoStudio.Scripts
                 _thirdPersonController.SetSensitivity(lookSensitivity);
                 _thirdPersonController.SetRotateOnMove(true);
                 _animator.SetLayerWeight(1, Mathf.Lerp(_animator.GetLayerWeight(1), 0f, Time.deltaTime * 10f));
+                aimRig.weight = Mathf.Lerp(aimRig.weight, 0f, Time.deltaTime * 20f);
             }
         }
 
